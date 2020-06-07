@@ -12,7 +12,12 @@ output:
     highlight: tango
     code_folding: hide
 ---
+
+  
+```{r}
+knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE, error=FALSE)
 # Context
+```
 
 The World Happiness Report is a landmark survey of the state of global happiness. The first report was published in 2012, the second in 2013, 
 the third in 2015, and the fourth in the 2016 Update. The World Happiness 2017, which ranks 155 countries by their happiness levels, was released 
@@ -54,7 +59,7 @@ library(plot3D)
 ```
 ```{r, message = F, warning = F}
 # World happiness report 2019
-Happiness <- read.csv("../input/2019.csv")
+Happiness <- read.csv("C:/Users/narendra.sahu/Documents/Happiness-score-2019/datasets_happiness_2019.csv")
 
 str(Happiness)
 ```
@@ -134,6 +139,7 @@ Num.cols <- sapply(Happiness, is.numeric)
 Cor.data <- cor(Happiness[, Num.cols])
 
 corrplot(Cor.data, method = 'color')  
+```
 
 ```{r, message = F, warning = F}
 # Create a correlation plot
@@ -483,7 +489,36 @@ sp + annotation_custom(grob = xbp_grob, xmin = xmin, xmax = xmax,
                     xmin = xmin-xoffset, xmax = xmin+xoffset, 
                     ymin = ymin, ymax = ymax)
 ```
-````
+
+```{r, message = F, warning = F}
+#::::::::::::::::::::::::::::Trust::::::::::::::::::::::::::::::
+sp <- ggscatter(Happiness, x = "Trust", y = "Happiness.Score",
+                color = "Continent", palette = "jco",
+                size = 3, alpha = 0.6)
+# Create box plots of x/y variables
+# Box plot of the x variable
+xbp <- ggboxplot(Happiness$Trust, width = 0.3, fill = "lightgray") +
+  rotate() +
+  theme_transparent()
+# Box plot of the y variable
+ybp <- ggboxplot(Happiness$Happiness.Score, width = 0.3, fill = "lightgray") +
+  theme_transparent()
+# Create the external graphical objects
+# called a "grop" in Grid terminology
+xbp_grob <- ggplotGrob(xbp)
+ybp_grob <- ggplotGrob(ybp)
+# Place box plots inside the scatter plot
+xmin <- min(Happiness$Trust); xmax <- max(Happiness$Trust)
+ymin <- min(Happiness$Happiness.Score); ymax <- max(Happiness$Happiness.Score)
+yoffset <- (1/15)*ymax; xoffset <- (1/15)*xmax
+# Insert xbp_grob inside the scatter plot
+sp + annotation_custom(grob = xbp_grob, xmin = xmin, xmax = xmax, 
+                       ymin = ymin-yoffset, ymax = ymin+yoffset) +
+  # Insert ybp_grob inside the scatter plot
+  annotation_custom(grob = ybp_grob,
+                    xmin = xmin-xoffset, xmax = xmin+xoffset, 
+                    ymin = ymin, ymax = ymax)
+```
 
 ## 3D Plot  
 
