@@ -17,7 +17,7 @@ output:
 
   
 ```{r}
-knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE, error=FALSE)
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE, error=FALSE)
 # Context
 ```
 
@@ -58,6 +58,7 @@ library(formattable)
 library(cowplot)
 library(ggpubr)
 library(plot3D)
+library(treemap)
 ```
 ```{r, message = F, warning = F}
 # World happiness report 2019
@@ -129,6 +130,25 @@ Happiness$Continent <- as.factor(Happiness$Continent)
 ```
 # Visualization
 In this section, we will see different variables and find out how they correlate with each other and happiness score.
+
+## Top 20 Happy countries
+```{r,message=F, warning=F}
+top20<-Happiness %>% filter(Happiness.Rank<=20)%>% arrange(desc(Happiness.Rank))
+top20$label<-paste(top20$Country,top20$Happiness.Rank,top20$Happiness.Score,sep="\n ")
+ options(repr.plot.width=12, repr.plot.height=8) 
+  library(treemap)
+  treemap(top20,
+          index=c("label"),
+          vSize="Happiness.Score",
+          vColor="Happiness.Rank",
+          type="value",
+          title="Top 20 Happy Countries -2019",
+          palette=terrain.colors(20),
+         command.line.output = TRUE, 
+              #fontsize.legend = 15, fontsize.title = 15, 
+              format.legend = list(scientific = FALSE, big.mark = " "))
+```
+
 
 ## Correlation plot
 Lets see the correlation between numerical variables in our dataset.
