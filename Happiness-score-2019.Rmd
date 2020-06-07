@@ -3,14 +3,16 @@ title: "Happiness Score with 2019 data"
 author: "Narendra Sahu"
 date: "07/06/2020"
 output:
+  word_document:
+    toc: yes
   html_document:
-    number_sections: false
-    toc: true
-    fig_width: 8
-    fig_height: 6
-    theme: cosmo
-    highlight: tango
     code_folding: hide
+    fig_height: 6
+    fig_width: 8
+    highlight: tango
+    number_sections: no
+    theme: cosmo
+    toc: yes
 ---
 
   
